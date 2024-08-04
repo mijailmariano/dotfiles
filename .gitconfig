@@ -1,8 +1,8 @@
 [core]
 	editor = code -w
-	excludesfile = /Users/mijailmariano/.gitignore_global
+	excludesfile = ~/.gitignore_global
 [user]
 	name = Mijail Q Mariano
-  email = 105242934+mijailmariano@users.noreply.github.com
+  	email = 105242934+mijailmariano@users.noreply.github.com
 [push]
 	default = upstream
