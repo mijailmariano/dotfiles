@@ -30,9 +30,9 @@ install_homebrew() {
 
 # Install packages from Brewfile
 install_packages() {
-    if [ -f "Brewfile" ]; then
+    if [ -f "$HOME/.dotfiles/Brewfile" ]; then
         print_message "Installing packages from Brewfile"
-        brew bundle
+        brew bundle --file="$HOME/.dotfiles/Brewfile"
     else
         print_message "Brewfile not found, skipping package installation"
     fi
@@ -41,8 +41,8 @@ install_packages() {
 # Create symlinks
 create_symlinks() {
     print_message "Creating symlinks"
-    ln -sf "$HOME/.dotfiles/.zshrc" "$HOME/.zshrc"
-    ln -sf "$HOME/.dotfiles/.gitconfig" "$HOME/.gitconfig"
+    ln -sf "$HOME/.dotfiles/configs/.zshrc" "$HOME/.zshrc"
+    ln -sf "$HOME/.dotfiles/configs/.gitconfig" "$HOME/.gitconfig"
 }
 
 # Main execution

@@ -44,6 +44,13 @@ move_dotfiles_repo() {
     fi
 }
 
+# Symlink config files
+symlink_configs() {
+    print_message "Symlinking config files"
+    ln -sf "$HOME/.dotfiles/configs/.zshrc" "$HOME/.zshrc"
+    ln -sf "$HOME/.dotfiles/configs/.gitconfig" "$HOME/.gitconfig"
+}
+
 # Main execution
 print_message "Starting setup process"
 
@@ -51,5 +58,6 @@ create_backup_folder
 backup_configs
 install_command_line_tools
 move_dotfiles_repo
+symlink_configs
 
-print_message "Setup complete! You can now run build.sh"
+print_message "Setup complete! You can now run scripts/build.sh"
