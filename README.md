@@ -55,6 +55,37 @@ brew bundle --file ~/.dotfiles/Brewfile
 cd ~/.dotfiles && brew bundle
 ```
 
+### Rapid Deployment
+
+Assuming you've cloned this repository in the ``HOME`` directory, follow these steps for rapid setup:
+
+1. **Navigate to the dotfiles directory:**
+   
+   ```bash
+   cd ~/dotfiles
+   ```
+
+2. **Run the setup and build scripts**
+   
+    ```bash
+    bash setup.sh
+    ```
+
+    ```bash
+    bash build.sh
+    ```
+
+    ``This will:``
+
+   * Backup existing .zshrc and .gitconfig configurations
+   * Install necessary tools
+   * Move the dotfiles repo to ~/.dotfiles
+   * Check Homebrew and install packages
+   * Create symlinks for dotfiles
+
+_Restart your terminal or run source ~/.zshrc to apply changes._
+
+
 ### Additional Considerations
 * Learn how to use [`defaults`](https://macos-defaults.com/#%F0%9F%99%8B-what-s-a-defaults-command) to record and restore System Preferences and other macOS configurations.
 * Organize these growing steps into multiple script files.
