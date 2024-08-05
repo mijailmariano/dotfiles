@@ -23,6 +23,8 @@ git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
 
 ### 3. Create ``symlinks`` in the Home directory to the real files in the repo.
 
+***Symlinks (symbolic links) are like shortcuts. They allow us to keep our actual dotfiles in one place (our repo) while the system looks for them in the default locations.***
+
 * There are better and less manual ways to do this;
 * investigate install scripts and bootstrapping tools.
 
