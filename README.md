@@ -17,18 +17,18 @@
 **``Use SSH (if set up)...``**
 
 ```zsh
-git clone git@github.com:mijailmariano/dotfiles.git
+git clone git@github.com:mijailmariano/dotfiles.git ~/.dotfiles
 ```
 
 **``...or use HTTPS and switch remotes later.``**
 
 ```zsh
-git clone https://github.com/mijailmariano/dotfiles.git
+git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
 ```
 
 #### 2. Run the setup script
 
-***Note on ``Symlinks`` (symbolic links): Similar to shortcuts. These will be used to keep our actual dotfiles in one place (the repo) while the system looks for them in the default locations.***
+***A note on ``Symlinks`` (symbolic links): these are similar to shortcuts. they are used to keep the actual dotfiles in one place (the repo) while the system looks for them in the default locations from the home directory.***
 
 ```zsh
 bash ~/.dotfiles/scripts/setup.sh
@@ -36,23 +36,12 @@ bash ~/.dotfiles/scripts/setup.sh
 
 ``setup script will:``
 
-* Creates a backup of existing config files
-* Installs Command Line Tools (if not already installed)
-* Moves the dotfiles repo to ~/.dotfiles (if necessary)
-* Creates symlinks for the config files
+* Create a backup folder to cache existing config files
+* Install Command Line Tools (if not already installed)
+* Install Homebrew (if not already installed)
+* Install packages from the Brewfile
+* Move the dotfiles repo to ~/.dotfiles (if necessary)
+* Create symlinks for the config files
 
 
-#### 3. Run the build script
-
-```zsh
-bash ~/.dotfiles/scripts/build.sh
-```
-
-``build script will:``
-
-* Checks and backup config files again (for safety)
-* Installs Homebrew (if not already installed)
-* Installs packages from the Brewfile
-* Creates symlinks for the config files
-
-_Restart your terminal or run source ~/.zshrc to apply changes._
+_run source ~/.zshrc to apply changes or close and restart the terminal_
