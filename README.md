@@ -1,4 +1,4 @@
-## Steps to bootstrap a new Mac
+## Steps to Bootstrap (Mac)
 
 ```zsh
 .dotfiles
@@ -6,21 +6,22 @@
 ├── README.md
 ├── configs
 │   ├── .zshrc
-│   └── .gitconfig
-└── scripts
-    ├── setup.sh
-    └── build.sh
+│   ├── .gitconfig
+│   ├── .gitignore_global
+│   └── .config
+│       └── ... additional config directories and setup files
+└── setup.sh
 ```
 
 #### 1. Clone repo into new hidden directory.
 
-**``Use SSH (if set up)...``**
+**``If setup, use SSH...``**
 
 ```zsh
 git clone git@github.com:mijailmariano/dotfiles.git ~/.dotfiles
 ```
 
-**``...or use HTTPS and switch remotes later.``**
+**``...Or using HTTPS (can always change remotes later)``**
 
 ```zsh
 git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
@@ -36,12 +37,19 @@ bash ~/.dotfiles/scripts/setup.sh
 
 ``setup script will:``
 
-* Create a backup folder to cache existing config files
+* Create a timestamped backup of your existing configurations in ~/.backupConfigs/
 * Install Command Line Tools (if not already installed)
 * Install Homebrew (if not already installed)
-* Install packages from the Brewfile
-* Move the dotfiles repo to ~/.dotfiles (if necessary)
-* Create symlinks for the config files
+* Install packages from your Brewfile (if present)
+* Move the dotfiles repository to ~/.dotfiles (if necessary)
+* Symlink all specified config files and directories from your dotfiles repo
+* Leave any existing configurations not in your dotfiles untouched
+
+``Notes:``
+
+* Only configurations present in your dotfiles repo will be symlinked
+* Existing configurations not in your dotfiles (e.g., gh) will remain unchanged
+* Backups of your original configurations can be found in ~/.backupConfigs/[timestamp]/
 
 
 _run source ~/.zshrc to apply changes or close and restart the terminal_

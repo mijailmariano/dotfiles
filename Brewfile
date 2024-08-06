@@ -2,27 +2,22 @@ tap "adoptopenjdk/openjdk"
 tap "homebrew/bundle"
 tap "kdash-rs/kdash"
 tap "ubuntu/microk8s"
-
-# Clone of cat(1) with syntax highlighting and Git integration
-brew "bat"
-# Modern replacement for 'ls'
-brew "exa"
-# Distributed version control system
-brew "git"
-# UNIX shell (command interpreter)
-brew "zsh"
 # Image format providing lossless and lossy compression for web images
 brew "webp"
 # New file format for still image compression
 brew "jpeg-xl"
 # Codec library for encoding and decoding AV1 video streams
 brew "aom"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Modern, maintained replacement for ls
 brew "eza"
 # Library for encoding and decoding .avif files
 brew "libavif"
 # Graphics library to dynamically manipulate images
 brew "gd"
+# Distributed revision control system
+brew "git"
 # Validating, recursive, caching DNS resolver
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
@@ -59,18 +54,14 @@ brew "nifi"
 brew "node"
 # Development kit for the Java programming language
 brew "openjdk"
-# Cross-platform library for audio I/O
-brew "portaudio"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.9"
 # Version control system designed to be a better CVS
 brew "subversion"
 # Terminal multiplexer
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# UNIX shell (command interpreter)
+brew "zsh"
 # A fast and simple dashboard for Kubernetes written in Rust
 brew "kdash-rs/kdash/kdash"
 # Small, fast, single-package Kubernetes for developers, IoT and edge
@@ -78,8 +69,6 @@ brew "ubuntu/microk8s/microk8s"
 cask "font-hack-nerd-font"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
-# Open-source keystroke visualiser
-cask "keycastr"
 # Orchestrates virtual Ubuntu instances
 cask "multipass"
 # Desktop syncing client for ownCloud
