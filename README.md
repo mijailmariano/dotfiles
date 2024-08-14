@@ -36,7 +36,6 @@ bash ~/.dotfiles/scripts/setup.sh
 ```
 
 ``setup script will:``
-
 * Create a timestamped backup of your existing configurations in ~/.backupConfigs/
 * Install Command Line Tools (if not already installed)
 * Install Homebrew (if not already installed)
@@ -46,10 +45,8 @@ bash ~/.dotfiles/scripts/setup.sh
 * Leave any existing configurations not in your dotfiles untouched
 
 ``Notes:``
-
 * Only configurations present in your dotfiles repo will be symlinked
 * Existing configurations not in your dotfiles (e.g., gh) will remain unchanged
 * Backups of your original configurations can be found in ~/.backupConfigs/[timestamp]/
-
 
 _run source ~/.zshrc to apply changes or close and restart the terminal_
