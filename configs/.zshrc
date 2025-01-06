@@ -79,6 +79,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search)
 
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -117,30 +120,27 @@ alias ls="eza --icons=always"
 
 # Pre oh-my-zsh !!!!
 # >>> conda initialize >>>
-
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-
+__conda_setup="$('/Users/mijailmariano/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/Users/mijailmariano/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/mijailmariano/miniconda3/etc/profile.d/conda.sh"
     else
-      export PATH="/opt/anaconda3/bin:$PATH"
+        export PATH="/Users/mijailmariano/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
-
 # <<< conda initialize <<<
 
 # Julia programming language
 alias jl='julia'
 
 # Anaconda environment
-export PATH="/usr/local/opt/portaudio/bin:$PATH"
-export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"
-export PATH="/opt/anaconda3/bin:$PATH"
+# export PATH="/usr/local/opt/portaudio/bin:$PATH"
+# export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"
+# export PATH="/opt/anaconda3/bin:$PATH"
 
 # JAVA programming language
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
@@ -151,3 +151,8 @@ export PATH="/usr/local/sbin:$PATH"
 
 # VSCode Shortcut
 export PATH="$HOME/bin:$PATH"
+
+# IDEA IDE Launcher
+export PATH="$PATH:/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
+
+. "$HOME/.local/bin/env"
