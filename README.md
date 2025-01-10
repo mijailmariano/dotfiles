@@ -15,13 +15,15 @@
 
 #### 1. Clone repo into new hidden directory.
 
-**``If setup, use SSH...``**
+#### Quickstart
+
+**``SSH``**
 
 ```zsh
 git clone git@github.com:mijailmariano/dotfiles.git ~/.dotfiles
 ```
 
-**``...Or using HTTPS (can always change remotes later)``**
+**``HTTPS``**
 
 ```zsh
 git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
@@ -29,7 +31,7 @@ git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
 
 #### 2. Run the setup script
 
-***A note on ``Symlinks`` (symbolic links): these are similar to shortcuts. they are used to keep the actual dotfiles in one place (the repo) while the system looks for them in the default locations from the home directory.***
+***A note on ``Symlinks`` (symbolic links): these are similar to shortcuts or references to other directories. they're used to keep the actual dotfiles in one place (the repo) while the system looks for them in the default locations from the home directory.***
 
 ```zsh
 bash ~/.dotfiles/scripts/setup.sh
@@ -49,4 +51,7 @@ bash ~/.dotfiles/scripts/setup.sh
 * Existing configurations not in your dotfiles (e.g., gh) will remain unchanged
 * Backups of your original configurations can be found in ~/.backupConfigs/[timestamp]/
 
-_run source ~/.zshrc to apply changes or close and restart the terminal_
+```bash
+# to apply changes, run >
+source ~/.zshrc # or close and restart the terminal
+```
