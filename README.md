@@ -52,6 +52,6 @@ bash ~/.dotfiles/scripts/setup.sh
 * Backups of your original configurations can be found in ~/.backupConfigs/[timestamp]/
 
 ```bash
-# to apply changes, run >
+# to apply changes, run:
 source ~/.zshrc # or close and restart the terminal
 ```
