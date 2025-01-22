@@ -156,3 +156,6 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$PATH:/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 
 . "$HOME/.local/bin/env"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
