@@ -168,3 +168,6 @@ export PATH="$PATH:/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 export PATH="/Users/mijailmariano/.local/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias gsw='git switch $(git branch | fzf --preview "git log --oneline --color=always {} | head -20")'
