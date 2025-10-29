@@ -90,6 +90,9 @@ plugins=(git zsh-autosuggestions web-search direnv zsh-syntax-highlighting)
 # Homebrew
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+# Direnv (must be evaluated before loading oh-my-zsh)
+eval "$(direnv hook zsh)"
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
