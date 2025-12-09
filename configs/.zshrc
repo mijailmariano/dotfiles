@@ -174,3 +174,7 @@ export PATH="/Users/mijailmariano/.local/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 alias gsw='git switch $(git branch | fzf --preview "git log --oneline --color=always {} | head -20")'
+
+# nvm (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
