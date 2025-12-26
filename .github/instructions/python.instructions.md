@@ -218,4 +218,5 @@ def test_parse_metric_points_coerces_numeric_value() -> None:
 * If a design choice is non-obvious, add a short comment explaining why.
 
 ### Golden Rule
+
 If a future engineer would reasonably ask “why is this here?”, add a short comment answering that question.
