@@ -1,180 +1,98 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
+# -----------------------------------------------------------------------------
+# Powerlevel10k instant prompt (keep near the top)
+# Anything that may prompt for input must go ABOVE this block.
+# -----------------------------------------------------------------------------
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# -----------------------------------------------------------------------------
+# PATH setup (keep in one place to avoid surprises)
+# Order matters: earlier entries take precedence.
+# -----------------------------------------------------------------------------
+path=(
+  /opt/homebrew/bin
+  /opt/homebrew/sbin
+  "$HOME/.local/bin"
+  "$HOME/bin"
+  $path
+)
 
-# Python development environment
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
-export PATH="/Users/mijailmariano/.local/bin:$PATH"
+# Tool-specific PATH additions
+path+=(
+  "$HOME/nifi-1.24.0/bin"
+  /usr/local/sbin
+  "/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
+)
 
-# Remove any duplicate entries from PATH
-typeset -U PATH
+# De-duplicate PATH entries while preserving order
+typeset -U path
+export PATH
 
-
-# Path to your Oh My Zsh installation.
+# -----------------------------------------------------------------------------
+# Oh My Zsh
+# -----------------------------------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Plugins
+# Note: zsh-syntax-highlighting should load last.
+plugins=(
+  git
+  zsh-autosuggestions
+  web-search
+  zsh-syntax-highlighting
+)
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions web-search direnv zsh-syntax-highlighting)
-
-# Homebrew
+# Homebrew shell integration (sets brew-related env vars)
+# Safe to run after PATH is set; it can add additional entries as needed.
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-# Direnv (must be evaluated before loading oh-my-zsh)
-eval "$(direnv hook zsh)"
+# Direnv (directory-scoped environment variables via .envrc)
+# Keep ONLY this hook (do not also enable OMZ's direnv plugin).
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-source $ZSH/oh-my-zsh.sh
+# Remove stale Intel Homebrew completions path (avoids compinit _brew error)
+fpath=(${fpath:#/usr/local/share/zsh/site-functions})
 
-# User configuration
+# Load Oh My Zsh
+source "$ZSH/oh-my-zsh.sh"
 
-# export MANPATH="/usr/local/man:$MANPATH"
+# -----------------------------------------------------------------------------
+# Prompt configuration (Powerlevel10k)
+# -----------------------------------------------------------------------------
+[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
+# -----------------------------------------------------------------------------
+# Aliases
+# -----------------------------------------------------------------------------
 alias ls="eza --icons=always"
-
-# Pre oh-my-zsh !!!!
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mijailmariano/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/mijailmariano/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/mijailmariano/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/mijailmariano/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# Julia programming language
-alias jl='julia'
-
-# Anaconda environment
-# export PATH="/usr/local/opt/portaudio/bin:$PATH"
-# export PATH="/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"
-# export PATH="/opt/anaconda3/bin:$PATH"
-
-# JAVA programming language
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
-
-# Apache NiFi
-export PATH=$PATH:~/nifi-1.24.0/bin
-export PATH="/usr/local/sbin:$PATH"
-
-# VSCode Shortcut
-export PATH="$HOME/bin:$PATH"
-
-# IDEA IDE Launcher
-export PATH="$PATH:/Applications/IntelliJ IDEA CE.app/Contents/MacOS"
-
-. "$HOME/.local/bin/env"
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
-export PATH="/Users/mijailmariano/.local/bin:$PATH"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias jl="julia"
 alias gsw='git switch $(git branch | fzf --preview "git log --oneline --color=always {} | head -20")'
 
-# nvm (Node Version Manager)
+# Keep pip aligned with the active python3 (Homebrew)
+alias pip='python3 -m pip'
+alias pip3='python3 -m pip'
+
+# -----------------------------------------------------------------------------
+# Language / toolchain environment
+# -----------------------------------------------------------------------------
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
+
+# -----------------------------------------------------------------------------
+# Optional: load user-specific environment (if present)
+# (Keep this late so it can override earlier defaults if needed.)
+# -----------------------------------------------------------------------------
+[[ -f "$HOME/.local/bin/env" ]] && source "$HOME/.local/bin/env"
+
+# -----------------------------------------------------------------------------
+# Terminal integrations
+# -----------------------------------------------------------------------------
+[[ -f "${HOME}/.iterm2_shell_integration.zsh" ]] && source "${HOME}/.iterm2_shell_integration.zsh"
+[[ -f "$HOME/.fzf.zsh" ]] && source "$HOME/.fzf.zsh"
+
+# -----------------------------------------------------------------------------
+# Node Version Manager (nvm)
+# -----------------------------------------------------------------------------
 export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
+[[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh"
