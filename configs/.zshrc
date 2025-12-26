@@ -75,6 +75,14 @@ alias pip='python3 -m pip'
 alias pip3='python3 -m pip'
 
 # -----------------------------------------------------------------------------
+# Python compatibility: make `python` work on macOS (maps to python3)
+# Only define if `python` is not already installed.
+# -----------------------------------------------------------------------------
+if ! command -v python >/dev/null 2>&1 && command -v python3 >/dev/null 2>&1; then
+  python() { command python3 "$@"; }
+fi
+
+# -----------------------------------------------------------------------------
 # Language / toolchain environment
 # -----------------------------------------------------------------------------
 export JAVA_HOME="/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home"
