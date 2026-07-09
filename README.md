@@ -1,7 +1,8 @@
 # Dotfiles
 
-Mac bootstrap and shared shell configuration for personal development, AI-agent
-workflows, project scripts, and terminal setup.
+My Mac bootstrap notes and shared shell configuration. This is meant to be the
+place I check when I need to rebuild a machine, remember where a config lives,
+or reconnect the workbench/scripts setup I use across projects.
 
 ```zsh
 .dotfiles
@@ -38,47 +39,44 @@ git clone https://github.com/mijailmariano/dotfiles.git ~/.dotfiles
 
 ### 2. Run the setup script
 
-***A note on ``Symlinks`` (symbolic links): these are similar to shortcuts or references to other directories. they're used to keep the actual dotfiles in one place (the repo) while the system looks for them in the default locations from the home directory.***
+The setup script backs up existing files, installs the Homebrew bundle, and
+links the tracked configs into the places macOS and command-line tools expect.
 
 ```zsh
 bash ~/.dotfiles/scripts/setup.sh
 ```
 
-``setup script will:``
-* Create a timestamped backup of your existing configurations in ~/.backupConfigs/
-* Install Command Line Tools (if not already installed)
-* Install Homebrew (if not already installed)
-* Install packages from your Brewfile (if present)
-* Move the dotfiles repository to ~/.dotfiles (if necessary)
-* Symlink all specified config files and directories from your dotfiles repo
-* Leave any existing configurations not in your dotfiles untouched
+The main backup location is:
 
-``Notes:``
-* Only configurations present in your dotfiles repo will be symlinked
-* Existing configurations not in your dotfiles (e.g., gh) will remain unchanged
-* Backups of your original configurations can be found in ~/.backupConfigs/[timestamp]/
-
-```bash
-# to apply changes, run:
-source ~/.zshrc # or close and restart the terminal
+```zsh
+~/.backupConfigs/
 ```
 
-## Project And AI-Agent Bootstrap
+Key files linked by the setup script:
 
-This repo keeps machine bootstrap separate from project bootstrap:
+* `~/.zshrc` -> `~/.dotfiles/configs/.zshrc`
+* `~/.gitconfig` -> `~/.dotfiles/configs/.gitconfig`
+* `~/.gitignore_global` -> `~/.dotfiles/configs/.gitignore_global`
+* `~/.config/*` -> matching folders under `~/.dotfiles/configs/.config/`
 
-* `scripts/setup.sh` prepares the Mac, installs Homebrew packages from the
-  `Brewfile`, and links shared shell/config files into the home directory.
-* `scripts/init-direnv.sh` prepares project-level `.envrc` files for Python and
-  data projects. Run it inside a project directory when direnv should manage
-  that project's virtual environment and environment variables.
-* The shell aliases `wb` and `workbench` jump to `~/code/workbench`.
-* The shell alias `chat` launches `codex`.
-* The shell function `bootstrap-ai` calls
-  `~/code/workbench/scripts/bootstrap-ai-repo.sh` and passes through any
+```bash
+source ~/.zshrc
+```
+
+Or just close and reopen the terminal.
+
+## Workbench And Project Bootstrap
+
+Machine setup lives here. Project setup mostly lives in the workbench.
+
+Useful shell shortcuts:
+
+* `wb` and `workbench` jump to `~/code/workbench`.
+* `chat` launches `codex`.
+* `bootstrap-ai` runs the workbench bootstrap script and passes through any
   arguments.
 
-Expected local layout:
+Workbench scripts I expect to have locally:
 
 ```zsh
 ~/code/workbench
@@ -87,40 +85,44 @@ Expected local layout:
     └── parse_codex_jsonl.py
 ```
 
-Use this flow for AI-agent-enabled repositories:
+For a new project that should get the standard AI-agent files/scripts, run:
 
 ```zsh
-cd ~/code/workbench
 bootstrap-ai /path/to/project
 ```
 
-Keep project-specific agent files, generated logs, and repository-local
-automation in the target project or in `~/code/workbench`; keep only portable
-shell entry points and shared bootstrap assumptions in this dotfiles repo.
+For project environment setup, run this from inside the project:
+
+```zsh
+~/.dotfiles/scripts/init-direnv.sh
+```
+
+That writes a project `.envrc` for the detected Python/tooling setup and runs
+through the direnv allow flow. Keep project-specific agent files, generated
+logs, and repo-local automation in the project or in `~/code/workbench`; this
+repo should only keep the portable shell entry points and shared assumptions.
 
 ## WezTerm
 
-WezTerm is managed through the same dotfiles structure as other `.config`
-directories:
+WezTerm lives in dotfiles the same way the other `.config` folders do:
 
 ```zsh
 ~/.dotfiles/configs/.config/wezterm/wezterm.lua
 ~/.config/wezterm -> ~/.dotfiles/configs/.config/wezterm
 ```
 
-The shared config should stay portable across personal and work machines.
-Machine-specific settings belong in this untracked file:
+The shared config should work across any computer or environment I bootstrap.
+Anything that only belongs in one local setup goes here:
 
 ```zsh
 ~/.dotfiles/configs/.config/wezterm/wezterm.local.lua
 ```
 
-The MVP keeps iTerm2 installed as a fallback while WezTerm is tested as the
-primary terminal. The shell config only loads iTerm shell integration when
-`TERM_PROGRAM` is `iTerm.app`, which avoids sending iTerm-specific integration
-sequences inside WezTerm.
+WezTerm is the terminal config I expect to use day to day. The shell config only
+loads iTerm shell integration when `TERM_PROGRAM` is `iTerm.app`, so WezTerm
+does not get iTerm-specific shell integration sequences.
 
-After bootstrapping a new machine, verify WezTerm with:
+After bootstrapping a machine, these are the quick checks:
 
 ```zsh
 test -L ~/.config/wezterm
