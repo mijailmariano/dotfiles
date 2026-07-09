@@ -128,3 +128,34 @@ After bootstrapping a machine, these are the quick checks:
 test -L ~/.config/wezterm
 wezterm --config-file ~/.config/wezterm/wezterm.lua show-keys --lua >/dev/null
 ```
+
+## Karabiner-Elements
+
+Karabiner-Elements is linked through the shared `.config` setup:
+
+```zsh
+~/.dotfiles/configs/.config/karabiner/karabiner.json
+~/.config/karabiner -> ~/.dotfiles/configs/.config/karabiner
+```
+
+The expected terminal launcher is a complex modification that maps
+left Option + left Command + Space to WezTerm:
+
+```json
+{
+    "description": "Launch WezTerm with Option+Command+Space",
+    "manipulators": [
+        {
+            "from": {
+                "key_code": "spacebar",
+                "modifiers": {
+                    "mandatory": ["left_option", "left_command"],
+                    "optional": ["any"]
+                }
+            },
+            "to": [{ "shell_command": "open -a WezTerm" }],
+            "type": "basic"
+        }
+    ]
+}
+```
