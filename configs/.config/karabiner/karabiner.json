@@ -35,7 +35,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "open -a 'WezTerm.app'"
+                                        "shell_command": "open '/Applications/WezTerm.app'"
                                     }
                                 ],
                                 "type": "basic"
