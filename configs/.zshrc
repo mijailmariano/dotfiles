@@ -69,6 +69,19 @@ source "$ZSH/oh-my-zsh.sh"
 alias ls="eza --icons=always"
 alias jl="julia"
 alias gsw='git switch $(git branch | fzf --preview "git log --oneline --color=always {} | head -20")'
+alias wb='cd ~/code/workbench'
+alias workbench='cd ~/code/workbench'
+alias chat="codex"
+
+
+unalias bootstrap-ai 2>/dev/null
+
+bootstrap-ai() {
+
+    ~/code/workbench/scripts/bootstrap-ai-repo.sh "$@"
+
+}
+
 
 # Keep pip aligned with the active python3 (Homebrew)
 alias pip='python3 -m pip'
