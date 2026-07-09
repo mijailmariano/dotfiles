@@ -161,5 +161,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 configs/.config/iterm2/sockets/
+configs/.config/wezterm/wezterm.local.lua
 
 push_logs.txt

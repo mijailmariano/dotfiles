@@ -69,6 +69,8 @@ brew "ubuntu/microk8s/microk8s"
 cask "font-hack-nerd-font"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# GPU-accelerated terminal emulator
+cask "wezterm"
 # Orchestrates virtual Ubuntu instances
 cask "multipass"
 # Desktop syncing client for ownCloud

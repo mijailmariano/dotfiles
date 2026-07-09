@@ -97,3 +97,32 @@ bootstrap-ai /path/to/project
 Keep project-specific agent files, generated logs, and repository-local
 automation in the target project or in `~/code/workbench`; keep only portable
 shell entry points and shared bootstrap assumptions in this dotfiles repo.
+
+## WezTerm
+
+WezTerm is managed through the same dotfiles structure as other `.config`
+directories:
+
+```zsh
+~/.dotfiles/configs/.config/wezterm/wezterm.lua
+~/.config/wezterm -> ~/.dotfiles/configs/.config/wezterm
+```
+
+The shared config should stay portable across personal and work machines.
+Machine-specific settings belong in this untracked file:
+
+```zsh
+~/.dotfiles/configs/.config/wezterm/wezterm.local.lua
+```
+
+The MVP keeps iTerm2 installed as a fallback while WezTerm is tested as the
+primary terminal. The shell config only loads iTerm shell integration when
+`TERM_PROGRAM` is `iTerm.app`, which avoids sending iTerm-specific integration
+sequences inside WezTerm.
+
+After bootstrapping a new machine, verify WezTerm with:
+
+```zsh
+test -L ~/.config/wezterm
+wezterm --config-file ~/.config/wezterm/wezterm.lua show-keys --lua >/dev/null
+```
