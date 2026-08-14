@@ -73,7 +73,6 @@ alias wb='cd ~/code/workbench'
 alias workbench='cd ~/code/workbench'
 alias chat="codex"
 
-
 unalias bootstrap-ai 2>/dev/null
 
 bootstrap-ai() {
@@ -81,7 +80,6 @@ bootstrap-ai() {
     ~/code/workbench/scripts/bootstrap-ai-repo.sh "$@"
 
 }
-
 
 # Keep pip aligned with the active python3 (Homebrew)
 alias pip='python3 -m pip'
@@ -119,3 +117,60 @@ fi
 # -----------------------------------------------------------------------------
 export NVM_DIR="$HOME/.nvm"
 [[ -s "/opt/homebrew/opt/nvm/nvm.sh" ]] && source "/opt/homebrew/opt/nvm/nvm.sh"
+
+# -----------------------------------------------------------------------------
+# Excalidraw Docker Image Bootstrap
+# -----------------------------------------------------------------------------
+excalidraw() {
+  local container_name="excalidraw"
+  local image_name="excalidraw/excalidraw:latest"
+  local url="http://localhost:3000"
+
+  # First, check whether the Docker CLI exists
+  if ! command -v docker >/dev/null 2>&1; then
+    echo "Docker CLI was not found. Make sure OrbStack is installed."
+    return 1
+  fi
+
+  # Second, start OrbStack if the Docker engine is not running
+  if ! docker info >/dev/null 2>&1; then
+    echo "Starting OrbStack..."
+    open -a OrbStack
+
+    # Wait for Docker to become available
+    local attempts=0
+    until docker info >/dev/null 2>&1; do
+      attempts=$((attempts + 1))
+
+      if (( attempts >= 30 )); then
+        echo "Docker did not become available."
+        return 1
+      fi
+
+      sleep 1
+    done
+  fi
+
+  # Last, start the existing container, or create it if it does not exist
+  if docker container inspect "$container_name" >/dev/null 2>&1; then
+    if [ "$(docker inspect -f '{{.State.Running}}' "$container_name")" != "true" ]; then
+      echo "Starting Excalidraw..."
+      docker start "$container_name" >/dev/null
+    else
+      echo "Excalidraw is already running."
+    fi
+  else
+    echo "Creating Excalidraw container..."
+    docker run -d \
+      --name "$container_name" \
+      -p 3000:80 \
+      --restart unless-stopped \
+      "$image_name" >/dev/null
+  fi
+
+  echo "Opening $url"
+  open "$url"
+}
+
+# Initialize zoxide last
+eval "$(zoxide init zsh)"

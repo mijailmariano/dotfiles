@@ -1,14 +1,17 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
+local act = wezterm.action
+
+config.enable_kitty_keyboard = true
 
 config.font_dirs = {
-  wezterm.home_dir .. "/Library/Fonts",
+	wezterm.home_dir .. "/Library/Fonts",
 }
 
 config.font = wezterm.font_with_fallback({
-  "JetBrains Mono",
-  "Hack Nerd Font Mono",
-  "Symbols Nerd Font Mono",
+	"JetBrains Mono",
+	"Hack Nerd Font Mono",
+	"Symbols Nerd Font Mono",
 })
 config.font_size = 15.0
 
@@ -30,47 +33,55 @@ config.use_fancy_tab_bar = true
 
 config.audible_bell = "SystemBeep"
 config.visual_bell = {
-  fade_in_duration_ms = 75,
-  fade_out_duration_ms = 75,
-  target = "CursorColor",
+	fade_in_duration_ms = 75,
+	fade_out_duration_ms = 75,
+	target = "CursorColor",
 }
 
 config.colors = {
-  foreground = "#dbdbdb",
-  background = "#1a1a1a",
-  cursor_bg = "#ffffff",
-  cursor_fg = "#000000",
-  cursor_border = "#ffffff",
-  selection_fg = "#000000",
-  selection_bg = "#b3d7ff",
-  ansi = {
-    "#14191e",
-    "#b43c2a",
-    "#00c200",
-    "#c7c400",
-    "#2744c7",
-    "#c040be",
-    "#00c5c7",
-    "#c7c7c7",
-  },
-  brights = {
-    "#686868",
-    "#dd7975",
-    "#58e690",
-    "#ece100",
-    "#a7abf2",
-    "#e17ee1",
-    "#60fdff",
-    "#ffffff",
-  },
+	foreground = "#dbdbdb",
+	background = "#1a1a1a",
+	cursor_bg = "#ffffff",
+	cursor_fg = "#000000",
+	cursor_border = "#ffffff",
+	selection_fg = "#000000",
+	selection_bg = "#b3d7ff",
+	ansi = {
+		"#14191e",
+		"#b43c2a",
+		"#00c200",
+		"#c7c400",
+		"#2744c7",
+		"#c040be",
+		"#00c5c7",
+		"#c7c7c7",
+	},
+	brights = {
+		"#686868",
+		"#dd7975",
+		"#58e690",
+		"#ece100",
+		"#a7abf2",
+		"#e17ee1",
+		"#60fdff",
+		"#ffffff",
+	},
+}
+
+config.keys = {
+	{
+		key = "Enter",
+		mods = "SHIFT",
+		action = act.SendString("\x0a"),
+	},
 }
 
 local local_config = wezterm.home_dir .. "/.config/wezterm/wezterm.local.lua"
 local ok, overrides = pcall(dofile, local_config)
 if ok and type(overrides) == "table" then
-  for key, value in pairs(overrides) do
-    config[key] = value
-  end
+	for key, value in pairs(overrides) do
+		config[key] = value
+	end
 end
 
 return config
