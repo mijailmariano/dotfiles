@@ -1,3 +1,8 @@
+---
+label: GitHub Copilot Repository Adapter
+version: 1.0.0
+---
+
 # GitHub Copilot Repository Adapter
 
 Use `REPOSITORY_CONTEXT.md` as the canonical source for repository-wide
