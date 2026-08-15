@@ -76,9 +76,7 @@ alias chat="codex"
 unalias bootstrap-ai 2>/dev/null
 
 bootstrap-ai() {
-
     ~/code/workbench/scripts/bootstrap-ai-repo.sh "$@"
-
 }
 
 # Keep pip aligned with the active python3 (Homebrew)
@@ -172,5 +170,24 @@ excalidraw() {
   open "$url"
 }
 
-# Initialize zoxide last
+# -----------------------------------------------------------------------------
+# Zoxide
+# -----------------------------------------------------------------------------
+# Initialize zoxide after Oh My Zsh/compinit
 eval "$(zoxide init zsh)"
+
+# -----------------------------------------------------------------------------
+# Smart TAB completion
+# -----------------------------------------------------------------------------
+# Accept a visible zsh-autosuggestion when one exists
+# Otherwise preserve the existing fzf TAB completion behavior
+smart-tab() {
+  if [[ -n "$POSTDISPLAY" && $CURSOR -eq $#BUFFER ]]; then
+    zle autosuggest-accept
+  else
+    zle fzf-completion
+  fi
+}
+
+zle -N smart-tab
+bindkey '^I' smart-tab
