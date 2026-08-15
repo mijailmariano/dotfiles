@@ -1,57 +1,21 @@
-# .github/copilot-instructions.md
+# GitHub Copilot Repository Adapter
 
-## Purpose
+Use `REPOSITORY_CONTEXT.md` as the canonical source for repository-wide
+context, ownership boundaries, modification invariants, security constraints,
+and validation guidance.
 
-Help Copilot work effectively in this repository with minimal exploration, minimal CI failures, and production-grade changes.
+Use `README.md` for operator-oriented workflows and usage.
 
-## Operating Principles
+Before proposing or making a change:
 
-* Prefer existing patterns over introducing new architecture; keep changes small and coherent.
-* Do not invent APIs, config keys, file paths, scripts, or dependencies—verify by reading the source.
-* When requirements are ambiguous or trade-offs exist, ask a concise clarifying question and propose 1–2 options.
-* Optimize for correctness, readability, testability, and maintainability over cleverness.
-* Avoid “drive-by refactors”; refactor only when necessary to implement the change safely.
+1. Read the relevant repository context and operator workflow.
+2. Inspect the script or configuration that owns the requested behavior.
+3. Keep the change scoped to the request and avoid unrelated cleanup.
 
-## Where to Look First (to reduce searching)
+Scripts and configuration are authoritative for exact current behavior. If
+descriptive documentation differs from implementation, report the discrepancy
+rather than silently resolving it, replacing it, or inventing behavior.
 
-* Start with `README.md` and `CONTRIBUTING.md` for workflow, tooling, and conventions.
-* Prefer repo scripts over ad-hoc commands (e.g., `make`, `task`, `scripts/*`, `package.json` scripts).
-* Identify CI expectations by reading `.github/workflows/*` and mirror those checks locally.
-
-## Change Quality Bar
-
-* Code must build, lint, and test locally using the repo’s standard commands.
-* Update or add tests for any behavioral change:
-  * Bug fix => add a regression test.
-  * New logic => add unit tests; add integration tests only at boundaries.
-* Keep interfaces explicit; document non-obvious behavior and edge cases near the code.
-
-## Build / Test / Lint Guidance
-
-* Always use the repository’s documented workflow and versions (e.g., tool versions in `.tool-versions`, `.python-version`, `package.json`, `pyproject.toml`).
-* Prefer running the same checks CI runs; if uncertain, inspect `.github/workflows/*` to determine the exact commands.
-* If a command fails, capture the exact error and fix root cause; avoid “just ignore” workarounds.
-
-## Project Layout Expectations
-
-* Respect directory structure and ownership boundaries (avoid cross-cutting edits without reason).
-* Keep configuration changes localized and consistent with existing config style.
-* If adding new files, place them where similar files live and follow naming conventions already present.
-
-## Security & Safety Defaults
-
-* Never commit secrets; use environment variables and documented secret management patterns.
-* Validate and sanitize external inputs; avoid unsafe deserialization, shell injection, and overly broad permissions.
-* Prefer least privilege and secure-by-default settings in examples.
-
-## When Instructions Conflict
-
-* Follow the most specific applicable instructions in `.github/instructions/*.instructions.md` (path-scoped rules) over this file.
-* If two instruction sources conflict, choose the option that matches existing code patterns and CI expectations, and note the decision in the PR.
-
-## Exploration Policy (important)
-
-* Trust these instructions first.
-* Only search the repo further when:
-  * required information is missing here, or
-  * the repo’s source/config contradicts these instructions.
+Files under `.github/instructions/*.instructions.md` apply only when their
+frontmatter `applyTo` scope matches a file being changed. They are path-scoped
+guidance, not independent repository architecture.

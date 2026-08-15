@@ -4,6 +4,10 @@ My Mac bootstrap notes and shared shell configuration. This is meant to be the
 place I check when I need to rebuild a machine, remember where a config lives,
 or reconnect the workbench/scripts setup I use across projects.
 
+Before making changes, read [REPOSITORY_CONTEXT.md](REPOSITORY_CONTEXT.md) for
+ownership boundaries, the deployment model, modification invariants, security
+constraints, and change-scoped validation guidance.
+
 ```zsh
 .dotfiles
 ├── Brewfile
@@ -46,6 +50,11 @@ links the tracked configs into the places macOS and command-line tools expect.
 bash ~/.dotfiles/scripts/setup.sh
 ```
 
+Cloning directly to `~/.dotfiles` remains the normal workflow. When run from a
+clone elsewhere, the script identifies that clone from its own location and
+moves it to `~/.dotfiles`; it refuses to proceed if a different destination
+already exists there.
+
 The main backup location is:
 
 ```zsh
@@ -64,6 +73,51 @@ source ~/.zshrc
 ```
 
 Or just close and reopen the terminal.
+
+## Maintaining Configuration Across Machines
+
+On the machine where a change is made, inspect the repository state first.
+Modify the intended tracked configuration, normally under `configs/` or through
+an already-symlinked live path. Review the diff, run the relevant validation
+documented in `REPOSITORY_CONTEXT.md`, and stage only the intended paths:
+
+```bash
+cd ~/.dotfiles
+git status --short
+git diff
+git diff --check
+git add <changed-paths>
+git commit -m "Describe the configuration change"
+git push
+```
+
+On another machine, enter the repository and check the worktree. If tracked
+local changes appear, stop and review them before pulling:
+
+```bash
+cd ~/.dotfiles
+git status --short
+git pull --ff-only
+```
+
+With `--ff-only`, Git stops rather than creating an automatic merge if histories diverge.
+
+Existing symlinks make pulled configuration available at live linked locations.
+A running shell or application may still need to reload or restart; for Zsh,
+run `source ~/.zshrc` or open a new terminal. Do not assume automatic reloads.
+
+Pulling a changed `Brewfile` updates only the declaration. Apply its declared
+package and application state separately:
+
+```bash
+brew bundle --file="$HOME/.dotfiles/Brewfile"
+```
+
+A new managed configuration may not have a live symlink. For new destinations
+or changed bootstrap behavior, inspect `scripts/setup.sh`; do not routinely rerun setup.
+
+`REPOSITORY_CONTEXT.md` is authoritative for invariants and validation,
+`scripts/setup.sh` for deployment and symlinks, and `Brewfile` for declared package and application state.
 
 ## Workbench And Project Bootstrap
 
