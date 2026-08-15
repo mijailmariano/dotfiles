@@ -1,10 +1,35 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd -- "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)" || {
+    echo "Error: could not resolve the setup script directory" >&2
+    exit 1
+}
+REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd -P)" || {
+    echo "Error: could not resolve the dotfiles repository root" >&2
+    exit 1
+}
+DOTFILES_DIR="$HOME/.dotfiles"
+
 # function to print messages
 print_message() {
     echo "*******************************************"
     echo "$1"
     echo "*******************************************"
+}
+
+# verify the installation destination before making changes
+preflight_destination() {
+    if [ "$REPO_ROOT" = "$DOTFILES_DIR" ]; then
+        return 0
+    fi
+
+    if [ -e "$DOTFILES_DIR" ] || [ -L "$DOTFILES_DIR" ]; then
+        echo "Error: $DOTFILES_DIR already exists and is not this repository." >&2
+        echo "Refusing to overwrite, merge with, or move into the existing destination." >&2
+        return 1
+    fi
+
+    return 0
 }
 
 # create backup folder with timestamp
@@ -47,9 +72,9 @@ install_homebrew() {
 
 # install packages from Brewfile
 install_packages() {
-    if [ -f "$HOME/.dotfiles/Brewfile" ]; then
+    if [ -f "$REPO_ROOT/Brewfile" ]; then
         print_message "Installing packages from Brewfile"
-        brew bundle --file="$HOME/.dotfiles/Brewfile"
+        brew bundle --file="$REPO_ROOT/Brewfile"
     else
         print_message "Brewfile not found, skipping package installation"
     fi
@@ -57,10 +82,14 @@ install_packages() {
 
 # move dotfiles repo to ~/.dotfiles
 move_dotfiles_repo() {
-    if [ "$PWD" != "$HOME/.dotfiles" ]; then
-        print_message "Moving dotfiles repo to ~/.dotfiles"
-        mv "$PWD" "$HOME/.dotfiles"
-        cd "$HOME/.dotfiles" || exit
+    if [ "$REPO_ROOT" != "$DOTFILES_DIR" ]; then
+        print_message "Moving dotfiles repo to $DOTFILES_DIR"
+        if mv "$REPO_ROOT" "$DOTFILES_DIR"; then
+            REPO_ROOT="$DOTFILES_DIR"
+        else
+            echo "Error: failed to move the repository to $DOTFILES_DIR" >&2
+            return 1
+        fi
     else
         print_message "Dotfiles repo already in correct location"
     fi
@@ -74,8 +103,8 @@ symlink_configs() {
     items=(".zshrc" ".gitconfig" ".gitignore_global")
     
     for item in "${items[@]}"; do
-        if [ -e "$HOME/.dotfiles/configs/$item" ]; then
-            symlink_item "$HOME/.dotfiles/configs/$item" "$HOME/$item"
+        if [ -e "$REPO_ROOT/configs/$item" ]; then
+            symlink_item "$REPO_ROOT/configs/$item" "$HOME/$item"
         else
             echo "Warning: $item not found in dotfiles, skipping"
         fi
@@ -85,8 +114,8 @@ symlink_configs() {
     mkdir -p "$HOME/.config"
 
     # Symlink .config subdirectories
-    if [ -d "$HOME/.dotfiles/configs/.config" ]; then
-        for dir in "$HOME/.dotfiles/configs/.config"/*; do
+    if [ -d "$REPO_ROOT/configs/.config" ]; then
+        for dir in "$REPO_ROOT/configs/.config"/*; do
             if [ -d "$dir" ]; then
                 basename=$(basename "$dir")
                 symlink_item "$dir" "$HOME/.config/$basename"
@@ -111,6 +140,8 @@ symlink_item() {
     ln -sf "$source" "$target" || echo "Failed to symlink $source to $target"
 }
 # main execution
+preflight_destination || exit 1
+
 print_message "Starting Setup Process"
 
 create_backup_folder
@@ -118,7 +149,7 @@ backup_configs
 install_command_line_tools
 install_homebrew
 install_packages
-move_dotfiles_repo
+move_dotfiles_repo || exit 1
 symlink_configs
 
 print_message "Setup Complete!"
